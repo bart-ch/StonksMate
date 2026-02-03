@@ -1,0 +1,21 @@
+<h2>Log in</h2>
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { data: { controller: "form-validation", action: "submit->form-validation#validate" } }) do |f| %>
+  <div class="field">
+    <p><%= f.label :email %></p>
+    <p><%= f.email_field :email, autofocus: true, autocomplete: "email", data: { form_validation_target: "email" } %></p>
+    <p class="error" data-form-validation-target="emailError" style="display: none; color: red;"></p>
+  </div>
+
+  <div class="field">
+    <p><%= f.label :password %></p>
+    <p><%= f.password_field :password, autocomplete: "current-password", data: { form_validation_target: "password" } %></p>
+    <p class="error" data-form-validation-target="passwordError" style="display: none; color: red;"></p>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Log in" %>
+  </div>
+<% end %>
+
+<%= render "users/shared/links" %>

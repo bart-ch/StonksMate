@@ -24,6 +24,24 @@
   </head>
 
   <body>
+    <nav style="padding: 10px; background: #f0f0f0; margin-bottom: 20px;">
+      <%= link_to "Stonksmate", root_path %>
+      <span style="float: right;">
+        <% if user_signed_in? %>
+          <%= current_user.email %> |
+          <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
+        <% else %>
+          <%= link_to "Sign in", new_user_session_path %> |
+          <%= link_to "Sign up", new_user_registration_path %>
+        <% end %>
+      </span>
+    </nav>
+    <% if notice.present? %>
+      <p class="notice" style="color: green;"><%= notice %></p>
+    <% end %>
+    <% if alert.present? %>
+      <p class="alert" style="color: red;"><%= alert %></p>
+    <% end %>
     <%= yield %>
   </body>
 </html>
