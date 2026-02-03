@@ -1,0 +1,69 @@
+schema: spec-driven
+
+context: |
+  ## Project
+  Stonksmate - a personal stock portfolio tracker
+
+  ## Tech Stack
+  - Ruby on Rails 8
+  - PostgreSQL (via Docker for local development)
+  - Docker / Docker Compose for local services
+  - Hotwire (Turbo + Stimulus) for frontend interactivity
+  - Solid Queue for background jobs
+  - Devise for authentication
+  - jsonapi-serializer for API responses
+  - RSpec + FactoryBot for testing
+  - RuboCop for linting
+
+  ## Architecture (DDD)
+  - Domains live in app/domains/{domain_name}/ with flat file structure
+  - Domain names can include verbs if it improves clarity
+  - Each domain has an App facade (e.g., Portfolio::App) that encapsulates business logic
+  - App facades use instance methods (class methods only if truly needed)
+  - Initialize App with user: Portfolio::App.new(user: current_user).holdings
+  - Database access through repositories only
+  - Domains communicate only through their facades
+  - Authorization is scoped via facade initialization: user set once, all methods automatically scoped
+  - Custom exceptions for error handling
+  - Shared cross-domain code goes in app/lib/
+
+  ## API
+  - REST endpoints
+  - JSON:API standard via jsonapi-serializer
+
+  ## Database
+  - Prefer DB constraints over AR validations
+  - Use AR validations only when needed for UI feedback
+
+  ## Testing Conventions
+  - Behavior testing: test behaviors, not implementation
+  - Interact with system through facades, not models directly
+  - Create test helpers wrapping facades with sensible defaults
+  - Use mock wrappers for external API calls
+  - Use request specs for controller testing (not controller specs) - tests go through routes
+
+  ## Code Style
+  - No comments in code unless absolutely necessary (e.g., explaining third-party service quirks)
+  - Keep it simple, don't overcomplicate
+  - Avoid N+1 queries
+
+  ## General
+  - API keys in .env only, never in codebase
+  - Use free external services only (will propose options when needed)
+
+rules:
+  proposal:
+    - Keep under 300 words
+    - Always include a Non-goals section to clarify scope
+    - Focus on business value, not technical implementation
+  specs:
+    - Structure scenarios as preconditions, action, outcomes (separated by blank lines)
+    - Include edge cases and error scenarios
+  design:
+    - Document which domains are affected
+    - Note any N+1 risks and mitigation
+    - Include DB schema changes if applicable
+  tasks:
+    - Each task should be completable in under 2 hours
+    - Include a test task for each feature task
+    - Group tasks by domain when multiple domains involved
