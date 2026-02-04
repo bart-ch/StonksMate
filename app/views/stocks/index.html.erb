@@ -1,0 +1,57 @@
+<h1>Stock Lookup</h1>
+
+<h2>Search by Company Name</h2>
+
+<%= form_with url: stocks_path, method: :get, data: { controller: "form-validation", action: "submit->form-validation#validateSearch" } do |f| %>
+  <div>
+    <%= f.text_field :q, value: @query, placeholder: "Enter company name (e.g., Apple, Microsoft)", data: { form_validation_target: "searchField" }, style: "width: 300px; padding: 8px;" %>
+    <%= f.submit "Search", style: "padding: 8px 16px;" %>
+  </div>
+  <div data-form-validation-target="errorContainer" style="color: red; margin-top: 5px;"></div>
+<% end %>
+
+<%= turbo_frame_tag "search_results" do %>
+  <% if @query.present? %>
+    <% if @no_results %>
+      <p style="margin-top: 20px;">No results found for "<%= @query %>"</p>
+    <% elsif @results.any? %>
+      <table style="margin-top: 20px; border-collapse: collapse; width: 100%;">
+        <thead>
+          <tr style="border-bottom: 2px solid #333;">
+            <th style="text-align: left; padding: 10px;">Symbol</th>
+            <th style="text-align: left; padding: 10px;">Name</th>
+            <th style="text-align: right; padding: 10px;">Price</th>
+            <th style="text-align: right; padding: 10px;">Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @results.each do |stock| %>
+            <tr style="border-bottom: 1px solid #ddd;">
+              <td style="padding: 10px;">
+                <%= link_to stock[:symbol], stock_path(stock[:symbol]), data: { turbo_frame: "_top" } %>
+              </td>
+              <td style="padding: 10px;"><%= stock[:name] %></td>
+              <td style="text-align: right; padding: 10px;">
+                <% if stock[:price] && stock[:price] > 0 %>
+                  $<%= number_with_precision(stock[:price], precision: 2) %>
+                <% else %>
+                  <span style="color: #999;">N/A</span>
+                <% end %>
+              </td>
+              <td style="text-align: right; padding: 10px;">
+                <% if stock[:change] && stock[:change_percent] %>
+                  <% color = stock[:change] >= 0 ? "green" : "red" %>
+                  <% sign = stock[:change] >= 0 ? "+" : "" %>
+                  <span style="color: <%= color %>;">
+                    <%= sign %><%= number_with_precision(stock[:change], precision: 2) %>
+                    (<%= sign %><%= number_with_precision(stock[:change_percent], precision: 2) %>%)
+                  </span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  <% end %>
+<% end %>

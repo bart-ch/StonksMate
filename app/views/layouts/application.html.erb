@@ -25,7 +25,8 @@
 
   <body>
     <nav style="padding: 10px; background: #f0f0f0; margin-bottom: 20px;">
-      <%= link_to "Stonksmate", root_path %>
+      <%= link_to "Stonksmate", root_path %> |
+      <%= link_to "Stock Lookup", stocks_path %>
       <span style="float: right;">
         <% if user_signed_in? %>
           <%= current_user.email %> |

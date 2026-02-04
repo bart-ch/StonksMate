@@ -17,9 +17,11 @@ RSpec.describe "User Registration", type: :system do
 
     it "shows error for invalid email format without HTTP request" do
       visit new_user_registration_path
-      fill_in "Email", with: "not-an-email"
+      fill_in "Email", with: "notanemail"
       fill_in "Password", with: "password123"
       fill_in "Password confirmation", with: "password123"
+
+      page.execute_script("document.querySelector('form').setAttribute('novalidate', 'true')")
       click_button "Sign up"
 
       expect(page).to have_content("Email is invalid")

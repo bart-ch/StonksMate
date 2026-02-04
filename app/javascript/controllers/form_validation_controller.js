@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["email", "password", "passwordConfirmation", "emailError", "passwordError", "passwordConfirmationError"]
+  static targets = ["email", "password", "passwordConfirmation", "emailError", "passwordError", "passwordConfirmationError", "searchField", "errorContainer"]
 
   connect() {
     this.clearErrors()
@@ -98,6 +98,24 @@ export default class extends Controller {
     if (this.hasPasswordConfirmationErrorTarget) {
       this.passwordConfirmationErrorTarget.textContent = ""
       this.passwordConfirmationErrorTarget.style.display = "none"
+    }
+    if (this.hasErrorContainerTarget) {
+      this.errorContainerTarget.textContent = ""
+    }
+  }
+
+  validateSearch(event) {
+    this.clearErrors()
+
+    if (this.hasSearchFieldTarget) {
+      const query = this.searchFieldTarget.value.trim()
+
+      if (query === "") {
+        if (this.hasErrorContainerTarget) {
+          this.errorContainerTarget.textContent = "Please enter a stock symbol or company name"
+        }
+        event.preventDefault()
+      }
     }
   }
 }
