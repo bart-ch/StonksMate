@@ -60,7 +60,7 @@
 ## 9. Navigation & Integration
 
 - [x] 9.1 Add "Stock Lookup" link to navigation
-- [ ] 9.2 Manual smoke test with real API key
+- [x] 9.2 Manual smoke test with real API key
 - [x] 9.3 Verify all specs pass
 
 ---
